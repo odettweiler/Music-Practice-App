@@ -226,7 +226,7 @@ function createChord(root, type) {
   // add third/suspended note
   if (type === 'major' || type === 'major maj7' || type === 'major min7' || type === 'augmented') {
     notes.push(getNoteFromIntervalWithName(root, 'major third'));
-  } else if (type === 'minor' || type === 'minor maj7' || type === 'minor min7') {
+  } else if (type === 'minor' || type === 'minor maj7' || type === 'minor min7' || type === 'diminished') {
     notes.push(getNoteFromIntervalWithName(root, 'minor third'));
   } else if (type === 'sus2') {
     notes.push(getNoteFromIntervalWithName(root, 'major second'));

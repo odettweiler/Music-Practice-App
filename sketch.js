@@ -20,6 +20,8 @@ var displayCorrectAnswer = false;
 var qData;
 var interface;
 
+var prevCorrectAnswer = -1;
+
 function setup() {
     var canvas = createCanvas(600, 600);
     score = str(numCorrect + "/" + questionsAnswered);
@@ -302,9 +304,12 @@ function answer(correct) {
     numCorrect++;
     corrTimer = 255;
     incTimer = 0;
+    prevCorrectAnswer = -1;
   } else {
     incTimer = 255;
     corrTimer = 0;
+    prevCorrectAnswer = getCorrectAnswer(qData); // update correct answer to be displayed
+    alert("Incorrect! Correct answer is: " + prevCorrectAnswer.toString());
   }
   questionsAnswered++;
   score = str(numCorrect + "/" + questionsAnswered);
