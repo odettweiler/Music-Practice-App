@@ -21,6 +21,7 @@ var qData;
 var interface;
 
 var prevCorrectAnswer = -1;
+var prevTimer = 0;
 
 function setup() {
     var canvas = createCanvas(600, 600);
@@ -38,6 +39,7 @@ function draw() {
 
     if (incTimer > 0) incTimer -= 5;
     if (corrTimer > 0) corrTimer -= 5;
+    if (prevTimer > 0) prevTimer -= 5;
 
     drawInfo(qData);
 }
@@ -49,6 +51,10 @@ function drawInfo(data) {
   textSize(20);
   textFont(font);
   textAlign(CENTER);
+
+  if (prevTimer > 0 && prevCorrectAnswer != -1) {
+    text("Incorrect! Correct answer is " + prevCorrectAnswer.toString(), width/2, height/2);
+  }
 
   switch(data.type) {
     case 'interval':
@@ -304,12 +310,15 @@ function answer(correct) {
     numCorrect++;
     corrTimer = 255;
     incTimer = 0;
+
+    prevTimer = 0
     prevCorrectAnswer = -1;
   } else {
     incTimer = 255;
     corrTimer = 0;
+
+    prevTimer = 500;
     prevCorrectAnswer = getCorrectAnswer(qData); // update correct answer to be displayed
-    alert("Incorrect! Correct answer is: " + prevCorrectAnswer.toString());
   }
   questionsAnswered++;
   score = str(numCorrect + "/" + questionsAnswered);
