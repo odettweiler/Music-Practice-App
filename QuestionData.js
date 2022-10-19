@@ -3,9 +3,9 @@ class QuestionData {
     this.type = type;
   }
 
-  static genNewQuestion() {
+  static genNewQuestion(possibleQuestions) {
     // generate a random question and return it
-    var possibleQuestions = ['interval', 'semitone', 'key', 'fifths', 'relativekey', 'chord', 'root', 'transpose'];
+    // var possibleQuestions = ['interval', 'semitone', 'key', 'fifths', 'relativekey', 'chord', 'root', 'transpose'];
     var questionType = random(possibleQuestions);
 
     switch (questionType) {

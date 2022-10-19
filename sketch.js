@@ -1,3 +1,4 @@
+var allPossibleQuestions = ['interval', 'semitone', 'key', 'fifths', 'relativekey', 'chord', 'root', 'transpose'];
 var possibleQuestions = ['interval', 'semitone', 'key', 'fifths', 'relativekey', 'chord', 'root', 'transpose'];
 
 var possibleNotes = ['A', 'A#/Bb', 'B/Cb', 'C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab'];
@@ -5,6 +6,8 @@ var possibleNoteNames = ['A', 'A#', 'Bb', 'B', 'Cb', 'C', 'C#', 'Db', 'D', 'D#',
 var possibleIntervals = ['perfect unison', 'minor second', 'major second', 'minor third', 'major third', 'perfect fourth', 'tritone',
         'perfect fifth', 'minor sixth', 'major sixth', 'minor seventh', 'major seventh', 'perfect octave'];
 var possibleKeyTypes = ['major', 'natural minor', 'harmonic minor'];
+
+var qTypeCheckBoxes = [];
 
 var font;
 var score;
@@ -26,10 +29,17 @@ var prevTimer = 0;
 function setup() {
     var canvas = createCanvas(600, 600);
     score = str(numCorrect + "/" + questionsAnswered);
-    font = loadFont('assets/Avenir-LT-Std-45-Book_5171.ttf')
+    font = loadFont('assets/Avenir-LT-Std-45-Book_5171.ttf');
 
-    // testing
-    qData = QuestionData.genNewQuestion();
+    // init checkboxes
+    for (var i = 0; i < allPossibleQuestions.length; i++) {
+      var checkbox = createCheckbox(possibleQuestions[i], true)
+      checkbox.changed(checkboxChanged);
+      checkbox.position(610, (i*20)+10);
+      qTypeCheckBoxes.push(checkbox);
+    }
+
+    qData = QuestionData.genNewQuestion(possibleQuestions);
     interface = new AnswerInterface(getPossibleAnswers(qData));
 }
 
@@ -42,6 +52,19 @@ function draw() {
     if (prevTimer > 0) prevTimer -= 5;
 
     drawInfo(qData);
+}
+
+function checkboxChanged() {
+  possibleQuestions = [];
+  for (var i = 0; i < qTypeCheckBoxes.length; i++) {
+    var checkbox = qTypeCheckBoxes[i];
+
+    if (checkbox.checked()) {
+      if (!possibleQuestions.includes(allPossibleQuestions[i])) {
+        possibleQuestions.push(allPossibleQuestions[i]);
+      }
+    }
+  }
 }
 
 // question functions
@@ -323,6 +346,6 @@ function answer(correct) {
   questionsAnswered++;
   score = str(numCorrect + "/" + questionsAnswered);
 
-  qData = QuestionData.genNewQuestion();
+  qData = QuestionData.genNewQuestion(possibleQuestions);
   interface.updateAnswers(getPossibleAnswers(qData));
 }
